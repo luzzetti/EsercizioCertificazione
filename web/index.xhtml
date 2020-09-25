@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:outputStylesheet library="css" name="stile.css?ver=7"></h:outputStylesheet>
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+    <h1>Posts</h1>
+
+    <h:panelGroup layout="block" id="contenitore_copertina">
+        <h:graphicImage id="copertina"
+                        value="#{resource['images:minimalBackground.jpg']}"
+                        alt="Sfondo minimal di un tramonto"/>
+    </h:panelGroup>
+
+    <h:panelGroup layout="block" id="formInserimentoPost">
+        <h:form>
+
+            <h:outputLabel for="titoloPost"
+                           styleClass="block">Titolo</h:outputLabel>
+            <h:inputText value="#{postJSF.titoloPost}" id="titoloPost"/>
+            <br/>
+            <h:outputLabel for="testoPost"
+                           styleClass="block">Testo</h:outputLabel>
+            <h:inputTextarea value="#{postJSF.testoPost}"
+                             id="testoPost"
+                             styleClass="massimaLarghezza"/>
+            <br/>
+            <h:commandButton id="aggiungiPost"
+                             styleClass="massimaLarghezza"
+                             value="aggiungiPost"
+                             action="#{postJSF.aggiungiPost()}"/>
+        </h:form>
+    </h:panelGroup>
+
+    <h:panelGroup layout="block" id="main">
+        <h:dataTable id="todoTable" value="#{postJSF.listaPost}" var="post">-->
+            <h:column>#{post.titolo}</h:column>
+            <h:column>#{post.testo}</h:column>
+            <h:column>#{post.istanteCreazione}</h:column>
+        </h:dataTable>
+    </h:panelGroup>
+
+</h:body>
+</html>
