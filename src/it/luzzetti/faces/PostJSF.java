@@ -1,7 +1,9 @@
 package it.luzzetti.faces;
 
+import it.luzzetti.interceptors.Loggable;
 import it.luzzetti.models.Post;
 import it.luzzetti.service.PostService;
+import it.luzzetti.service.StatisticheService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -16,27 +18,31 @@ public class PostJSF {
     @Inject
     private PostService postService;
 
+    @Inject
+    private StatisticheService statisticheService;
+
     private String titoloPost;
     private String testoPost;
     private List<Post> listaPost;
 
     @PostConstruct
     public void init() {
-        System.out.println("[Start] - PostJSF.init");
         titoloPost = "";
         testoPost = "";
         listaPost = postService.leggiListaPost();
-        System.out.println("[ End ] - PostJSF.init");
     }
 
+    @Loggable
     public String aggiungiPost() {
-        System.out.println("[Start] - PostJSF.aggiungiPost");
         final Post nuovoPost = postService.creaPost(this.titoloPost, this.testoPost);
-        System.out.println("[ End ] - PostJSF.aggiungiPost");
         return "post_inserito";
     }
 
     /* GETTERS - SETTERS */
+
+    public int contaPostOdierni() {
+        return statisticheService.contaPostOdierni();
+    }
 
     public List<Post> getListaPost() {
         return listaPost;

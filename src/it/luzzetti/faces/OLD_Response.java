@@ -1,5 +1,6 @@
 package it.luzzetti.faces;
 
+@Deprecated
 public class OLD_Response {
 
     private String nome;

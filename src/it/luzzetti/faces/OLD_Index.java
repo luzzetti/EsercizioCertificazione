@@ -1,16 +1,10 @@
 package it.luzzetti.faces;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.luzzetti.models.Utente;
-import javafx.beans.property.adapter.JavaBeanFloatPropertyBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.event.ValueChangeListener;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,6 +14,7 @@ import java.util.function.Predicate;
 
 @Named
 @RequestScoped
+@Deprecated
 public class OLD_Index implements Serializable {
 
     public enum Navigazione {

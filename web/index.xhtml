@@ -45,7 +45,7 @@
         <h:dataTable id="todoTable" value="#{postJSF.listaPost}" var="post">-->
             <h:column>#{post.titolo}</h:column>
             <h:column>#{post.testo}</h:column>
-            <h:column>#{post.istanteCreazione}</h:column>
+            <h:column>#{post.istanteCreazione.toLocalDate.toString()}</h:column>
         </h:dataTable>
     </h:panelGroup>
 
