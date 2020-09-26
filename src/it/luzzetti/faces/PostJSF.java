@@ -34,8 +34,12 @@ public class PostJSF {
 
     @Loggable
     public String aggiungiPost() {
-        final Post nuovoPost = postService.creaPost(this.titoloPost, this.testoPost);
-        return "post_inserito";
+        try {
+            final Post nuovoPost = postService.creaPost(this.titoloPost, this.testoPost);
+            return "post_inserito";
+        } catch (IllegalArgumentException iae) {
+            return "post_non_inserito";
+        }
     }
 
     /* GETTERS - SETTERS */

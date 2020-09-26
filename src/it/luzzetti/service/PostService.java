@@ -13,8 +13,12 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Loggable
@@ -24,6 +28,9 @@ public class PostService {
     @Inject
     @TipoDatabase(tipoDB = TipoDB.FILE)
     FalsoDatabase falsoDatabase;
+
+    @Inject
+    Validator va;
 
     @Inject
     @Aggiunto
@@ -37,12 +44,21 @@ public class PostService {
     private void init() {
     }
 
+    // TODO: Questo metodo inizia già a diventare troppo lungo.
+    //  Scoprire come gestire le violazioni in maniera decente, senza clutterare il codice
     public Post creaPost(String titolo, String testo) {
         OffsetDateTime istanteCreazione = OffsetDateTime.now();
         Post nuovoPost = new Post();
         nuovoPost.setTitolo(titolo);
         nuovoPost.setTesto(testo);
         nuovoPost.setIstanteCreazione(istanteCreazione);
+
+        Set<ConstraintViolation<Post>> violazioni = va.validate(nuovoPost);
+        if (!violazioni.isEmpty()) {
+            violazioni.forEach(System.out::println);
+            throw new IllegalArgumentException("Post non valido");
+        }
+
         falsoDatabase.persist(nuovoPost);
         eventoPostCreato.fire(nuovoPost);       // Gli eventi in CDI non vengono trattati in maniera ASINCRONA.
         return nuovoPost;
@@ -54,7 +70,10 @@ public class PostService {
     }
 
     public List<Post> leggiListaPost() {
-        return falsoDatabase.findAll();
+        return falsoDatabase.findAll()
+                .stream()
+                .sorted((p1, p2) -> p2.getIstanteCreazione().compareTo(p1.getIstanteCreazione()))
+                .collect(Collectors.toList());
     }
 
 //    @AroundInvoke

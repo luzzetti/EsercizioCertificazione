@@ -28,6 +28,11 @@ h1 {
     margin: auto;
 }
 
+#todoTable {
+    margin: auto;
+    text-align: center;
+}
+
 #formInserimentoPost {
     display: block;
     width: 50%;

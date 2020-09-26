@@ -5,7 +5,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-<h:outputStylesheet library="css" name="stile.css?ver=7"></h:outputStylesheet>
+<!-- TODO: Risolvere la codifica dei caratteri con lettere accentate, e dare un'occhiata all'i18n-->
+
+<h:outputStylesheet library="css" name="stile.css?ver=8"></h:outputStylesheet>
 
 <h:head>
 
@@ -45,7 +47,7 @@
         <h:dataTable id="todoTable" value="#{postJSF.listaPost}" var="post">-->
             <h:column>#{post.titolo}</h:column>
             <h:column>#{post.testo}</h:column>
-            <h:column>#{post.istanteCreazione.toLocalDate.toString()}</h:column>
+            <h:column>#{post.istanteCreazione.toLocalDate().toString()}</h:column>
         </h:dataTable>
     </h:panelGroup>
 

@@ -1,13 +1,18 @@
 package it.luzzetti.models;
 
 import it.luzzetti.interceptors.LoggingInterceptor;
+import it.luzzetti.validations.Lingua;
+import it.luzzetti.validations.NotParolaccia;
 
 import javax.interceptor.Interceptors;
+import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
 public class Post {
 
+    @NotNull @NotParolaccia(lingua = Lingua.ITALIANO)
     private String titolo;
+    @NotNull @NotParolaccia(lingua = Lingua.ITALIANO)
     private String testo;
     private OffsetDateTime istanteCreazione;
 
@@ -23,10 +28,9 @@ public class Post {
 
     @Interceptors(LoggingInterceptor.class)
     public String serializza() {
-        String sb = titolo + ";" +
+        return titolo + ";" +
                 testo + ";" +
                 istanteCreazione + ";";
-        return sb;
     }
 
     public OffsetDateTime getIstanteCreazione() {
