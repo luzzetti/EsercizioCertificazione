@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @Named
@@ -35,9 +36,9 @@ public class PostJSF {
     @Loggable
     public String aggiungiPost() {
         try {
-            final Post nuovoPost = postService.creaPost(this.titoloPost, this.testoPost);
+            postService.creaPost(titoloPost, testoPost);
             return "post_inserito";
-        } catch (IllegalArgumentException iae) {
+        } catch (ConstraintViolationException | IllegalArgumentException exception) {
             return "post_non_inserito";
         }
     }

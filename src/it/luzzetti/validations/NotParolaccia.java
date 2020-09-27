@@ -8,14 +8,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Constraint(validatedBy = NotParolacciaValidator.class)
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NotParolaccia {
 
     String message() default "Il testo contiene delle parole proibite";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-
     Lingua lingua() default Lingua.ITALIANO;
 
 }

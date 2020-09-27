@@ -10,9 +10,11 @@ import java.time.OffsetDateTime;
 
 public class Post {
 
-    @NotNull @NotParolaccia(lingua = Lingua.ITALIANO)
+    @NotNull
+    @NotParolaccia(lingua = Lingua.ITALIANO, message = "Il Titolo non può contenere una parolaccia")
     private String titolo;
-    @NotNull @NotParolaccia(lingua = Lingua.ITALIANO)
+    @NotNull
+    @NotParolaccia(lingua = Lingua.ITALIANO, message = "Il Post non può contenere una parolaccia")
     private String testo;
     private OffsetDateTime istanteCreazione;
 

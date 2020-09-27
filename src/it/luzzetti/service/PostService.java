@@ -8,16 +8,20 @@ import it.luzzetti.models.Post;
 import it.luzzetti.repository.FalsoDatabase;
 import it.luzzetti.repository.TipoDB;
 import it.luzzetti.repository.TipoDatabase;
+import it.luzzetti.validations.NotParolaccia;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.ValidationException;
 import javax.validation.Validator;
+import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -25,12 +29,14 @@ import java.util.stream.Collectors;
 @Profilable
 public class PostService {
 
+    Logger logger = Logger.getLogger(this.getClass().getName());
+
     @Inject
     @TipoDatabase(tipoDB = TipoDB.FILE)
     FalsoDatabase falsoDatabase;
 
     @Inject
-    Validator va;
+    Validator validator;
 
     @Inject
     @Aggiunto
@@ -40,25 +46,13 @@ public class PostService {
     @Rimosso
     private Event<Post> eventoPostRimosso;
 
-    @PostConstruct
-    private void init() {
-    }
-
-    // TODO: Questo metodo inizia già a diventare troppo lungo.
-    //  Scoprire come gestire le violazioni in maniera decente, senza clutterare il codice
-    public Post creaPost(String titolo, String testo) {
-        OffsetDateTime istanteCreazione = OffsetDateTime.now();
+    public Post creaPost(@Size(min = 3, max = 200) @NotParolaccia String titolo,
+                         @Size(min = 3, max = 200) String testo) {
         Post nuovoPost = new Post();
-        nuovoPost.setTitolo(titolo);
         nuovoPost.setTesto(testo);
+        nuovoPost.setTitolo(titolo);
+        OffsetDateTime istanteCreazione = OffsetDateTime.now();
         nuovoPost.setIstanteCreazione(istanteCreazione);
-
-        Set<ConstraintViolation<Post>> violazioni = va.validate(nuovoPost);
-        if (!violazioni.isEmpty()) {
-            violazioni.forEach(System.out::println);
-            throw new IllegalArgumentException("Post non valido");
-        }
-
         falsoDatabase.persist(nuovoPost);
         eventoPostCreato.fire(nuovoPost);       // Gli eventi in CDI non vengono trattati in maniera ASINCRONA.
         return nuovoPost;

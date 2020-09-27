@@ -4,7 +4,7 @@ import it.luzzetti.models.Post;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import java.util.ArrayList;
+import javax.validation.ValidationException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class PostRepositoryVolatile implements FalsoDatabase {
     }
 
     @Override
-    public void persist(Post post) {
+    public void persist(Post post) throws ValidationException {
         posts.add(post);
     }
 

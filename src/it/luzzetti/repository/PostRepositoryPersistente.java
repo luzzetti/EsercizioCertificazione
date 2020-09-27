@@ -1,13 +1,13 @@
 package it.luzzetti.repository;
 
 import it.luzzetti.interceptors.Loggable;
-import it.luzzetti.interceptors.LoggingInterceptor;
 import it.luzzetti.models.Post;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
-import javax.interceptor.Interceptors;
+import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class PostRepositoryPersistente implements FalsoDatabase {
     }
 
     @Override
-    public void persist(Post post) {
+    public void persist(@Valid Post post) throws ValidationException {
         posts.add(post);
     }
 
